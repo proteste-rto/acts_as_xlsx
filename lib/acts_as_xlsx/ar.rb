@@ -28,7 +28,12 @@ module Axlsx
       def acts_as_xlsx(options={})
         cattr_accessor :xlsx_i18n, :xlsx_columns
         self.xlsx_i18n = options.delete(:i18n) || false
-        self.xlsx_columns = options.delete(:columns) ||  self.column_names.map { |c| c = c.to_sym }
+        self.xlsx_columns = []
+        begin
+          self.xlsx_columns = options.delete(:columns) ||  self.column_names.map { |c| c = c.to_sym }
+        rescue
+          self.xlsx_columns = []
+        end
         extend Axlsx::Ar::SingletonMethods
       end
     end
